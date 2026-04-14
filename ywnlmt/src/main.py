@@ -203,7 +203,6 @@ def letter_window():
 
     # Aqui va el contenido de la carta
 
-
 # funcion con ambas funciones para que al momento de sacar la carta se ejecute el sonido
 def open_and_sound():
 
@@ -221,7 +220,138 @@ esta_pausado = False
 # funcion madre que carga la musica
 
 # aqui viene el codigo de la musica
+def cargar_y_reproducir():
+    # usamos la variable indice
+    global indice_actual
+
+    # detenemos por si una cancion estaba sonando antes
+    pygame.mixer.music.stop()
+
+    # cargamos la cancion que toca segun el indice
+    cancion_a_tocar =  music[indice_actual]
+    pygame.mixer.music.load(cancion_a_tocar)
+
+    # iniciamos la cancion
+    pygame.mixer.music.play(loops=0)
+
+def siguiente_cancion():
+    global indice_actual
+    # se cambia la posicion del indice a la siguiente en la lista
+    indice_actual += 1
+
+    if indice_actual >= len(music):
+        indice_actual = 0 # volvemos al inicio
+
+    cargar_y_reproducir()
+
+def anterior_cancion():
+
+    global indice_actual
+
+    indice_actual -= 1
+
+    if indice_actual < 0:
+        indice_actual = len(music) -1
+    
+    cargar_y_reproducir()
+
+def pausar_reanudar():
+    # tomamos la variable booleana
+    global esta_pausado
+
+    # si la musica esta sonando, pausaa
+    if pygame.mixer.music.get_busy() == True:
+        pygame.mixer.music.pause()
+        esta_pausado = True
+    elif esta_pausado == True:
+        pygame.mixer.music.unpause()
+        esta_pausado =  False
+    else:
+        cargar_y_reproducir()
+
+# en el siguiente bloque esta la logica de animaciones para los botones del reproductor
+
+next_anim = [
+    obtener_imagen("next_f1.png"),
+    obtener_imagen("next_f2.png"),
+    obtener_imagen("next_f1.png"),
+]
+previous_anim = [
+    obtener_imagen("previous_f1.png"),
+    obtener_imagen("previous_f2.png"),
+    obtener_imagen("previous_f1.png"),
+]
+pausar_anim = [
+    obtener_imagen("pausar_f1.png"),
+    obtener_imagen("pausar_f2.png"),
+    obtener_imagen("reanudar_f2.png"),
+    obtener_imagen("reanudar_f1.png")
+    ]
+reanudar_anim = [
+    obtener_imagen("reanudar_f1.png"),
+    obtener_imagen("reanudar_f2.png"),
+    obtener_imagen("pausar_f2.png"),
+    obtener_imagen("pausar_f1.png")
+]
+id_button_pause = canvas.create_image(400, 450, image=reanudar_anim[0], tags="reanudar")
+id_button_next = canvas.create_image(500, 450, image=next_anim[0], tags="next") 
+id_button_previous = canvas.create_image(300, 450, image=previous_anim[0], tags="previous") 
+
+def fun_reanudar_anim(frame):
+
+    if frame < len(reanudar_anim):
+
+        canvas.itemconfig(id_button_pause, image=reanudar_anim[frame])
+
+        root.after(100, fun_reanudar_anim, frame +1)
+    else:
+        canvas.itemconfig(id_button_pause, image=pausar_anim[0], tags="pausar")
+        canvas.tag_bind("pausar", "<Button-1>", lambda e: pausar_musica_anim())
+
+def fun_pausar_anim(frame):
+    
+    if frame < len(pausar_anim):
+        canvas.itemconfig(id_button_pause, image=pausar_anim[frame])
+
+        root.after(100, fun_pausar_anim, frame +1)
+    else:
+        canvas.itemconfig(id_button_pause, image=reanudar_anim[0], tags="reanudar")
+        canvas.tag_bind("reanudar", "<Button-1>", lambda e: reanudar_musica_anim())
+
+def fun_next_anim(frame):
+    
+    if frame < len(next_anim):
+
+        canvas.itemconfig(id_button_next, image=next_anim[frame])
+
+        root.after(100, fun_next_anim, frame +1)
+    
+
+def fun_previous_anim(frame):
+    if frame < len(previous_anim):
+        canvas.itemconfig(id_button_previous, image= previous_anim[frame])
+
+        root.after(100, fun_previous_anim, frame +1)
+# funciones que tienen la reproduccion de musica y animacion
+def reanudar_musica_anim():
+    fun_reanudar_anim(1)
+
+    pausar_reanudar()
+def pausar_musica_anim():
+    fun_pausar_anim(1)
+
+    pausar_reanudar()
+def next_musica_anim():
+    fun_next_anim(1)
+    siguiente_cancion()
+def previous_musica_anim():
+    fun_previous_anim(1)
+
+    anterior_cancion()
+
+canvas.tag_bind("reanudar", "<Button-1>", lambda e: reanudar_musica_anim())
+canvas.tag_bind("next", "<Button-1>", lambda e: next_musica_anim())
+canvas.tag_bind("previous", "<Button-1>", lambda e: previous_musica_anim())
 
 # render de ventana
 root.mainloop()
-
