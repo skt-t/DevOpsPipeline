@@ -1,0 +1,6 @@
+# rectangulo rosa dentro del rectangulo blanco - solo fue una practica para entender canvas
+# canvas.create_rectangle((50, 200, 300, 50), fill = 'pink', width=0)
+
+# label de texto pack lo muestra en el canvas
+# textTest = tk.Label(root, text="Negro que mierda")
+# textTest.pack()
