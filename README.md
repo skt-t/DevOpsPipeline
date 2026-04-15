@@ -25,7 +25,7 @@ Control de Versiones:
 
 Toda integración a main se realiza mediante Pull Requests (PR), los cuales requieren la revisión y aprobación del otro integrante del equipo para asegurar la calidad del código.
 
-3. Estructura del Repositorio
+# 3. Estructura del Repositorio
 La organización de carpetas sigue un patrón de separación de responsabilidades para facilitar la automatización:
 
 /src: Contiene el código fuente de la aplicación (main.py, utilidades.py).
@@ -55,7 +55,7 @@ Instalar dependencias (Dentro del entorno virtual):
 PowerShell
 pip install -r ywnlmt/requirements.txt
 
-5. Ejecución
+# 5. Ejecución
 Para iniciar la aplicación, ejecute el script principal desde la raíz:
 
 PowerShell
