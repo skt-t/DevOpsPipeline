@@ -201,7 +201,16 @@ def letter_window():
     canvas.create_image(275, 175, image=letter_paper)
     canvas.image = letter_paper
 
-    # Aqui va el contenido de la carta
+    canvas.create_text(
+        275, 175, # CORDENADAS
+        text="poner texto" \
+        " en este" \
+        " formato",
+        fill="black", # COLOR
+        font=("Segoe Script", 16, "bold"), # FUENTE, TAMANIO Y ESTILO   
+        justify="center", # ALINEACION DEL TEXTO
+        width=525 # ANCHO MAXIMO ANTES DE SALTAR LINEA
+    )
 
 # funcion con ambas funciones para que al momento de sacar la carta se ejecute el sonido
 def open_and_sound():
